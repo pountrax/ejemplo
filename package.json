@@ -1,0 +1,27 @@
+{
+  "name": "socket-chat-example",
+  "version": "0.0.1",
+  "description": "mi primera app con socket.io",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.22.3",
+    "http": "^0.0.1-security",
+    "socket.io": "^4.8.4"
+  },
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pountrax/ejemplo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pountrax/ejemplo/issues"
+  },
+  "homepage": "https://github.com/pountrax/ejemplo#readme"
+}
