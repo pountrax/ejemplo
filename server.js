@@ -11,12 +11,12 @@ app.use(express.static('public'));
 io.on('connection', (socket) => {
     console.log('New client connected');
 
-    socket.on('disconnect', () => {
-        console.log('Client disconnected');
-    });
-
     socket.on('updateScore', (newScore) => {
         io.emit('updateScore', newScore);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
     });
 });
 
