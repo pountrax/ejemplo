@@ -15,9 +15,9 @@ io.on('connection', (socket) => {
         console.log('Client disconnected');
     });
 
-    setInterval(() => {
-        io.emit('scoreUpdate', Math.floor(Math.random() * 100));
-    }, 1000);
+    socket.on('updateScore', (newScore) => {
+        io.emit('updateScore', newScore);
+    });
 });
 
 server.listen(3000, () => {

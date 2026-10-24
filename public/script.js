@@ -3,22 +3,25 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 600;
 
-const scoreText = document.getElementById('score');
-const socket = io();
-
 let score = 0;
+let scoreText = document.getElementById('score');
+let socket = io('http://localhost:3000');
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+function drawScore() {
     ctx.fillStyle = 'black';
     ctx.font = '32px Arial';
-    ctx.fillText('Score: ' + score, 16, 48);
+    ctx.fillText('Score: ' + score, 16, 16);
 }
 
-socket.on('scoreUpdate', (newScore) => {
-    score = newScore;
-    scoreText.textContent = score;
-    draw();
-});
+function update() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawScore();
+    score++;
+}
 
-draw();
+setInterval(update, 1000);
+
+socket.on('updateScore', (newScore) => {
+    score = newScore;
+    drawScore();
+});
