@@ -1,4 +1,3 @@
-
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -6,24 +5,36 @@ const socketIo = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { origin: "*" }   // permite conectarse desde cualquier página
+    cors: { origin: "*" }
 });
 
-let score = 0;
+app.get('/', (req, res) => {
+    res.send('Servidor funcionando 🎉');
+});
+
+const players = {}; // { idDelSocket: { name, score } }
 
 io.on('connection', (socket) => {
-    console.log('New client connected');
-    socket.emit('updateScore', score);   // le manda el score actual al que entra
-
-    socket.on('updateScore', (newScore) => {
-        score = newScore;
-        io.emit('updateScore', score);   // avisa a todos
+    // el jugador manda su nombre al entrar
+    socket.on('join', (name) => {
+        const cleanName = String(name || '').trim().slice(0, 20) || 'Anónimo';
+        players[socket.id] = { name: cleanName, score: 0 };
+        io.emit('players', Object.values(players));
     });
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected');
+        delete players[socket.id];
+        io.emit('players', Object.values(players));
     });
 });
+
+// cada segundo: +1 punto a cada jugador conectado
+setInterval(() => {
+    for (const id in players) {
+        players[id].score++;
+    }
+    io.emit('players', Object.values(players));
+}, 1000);
 
 server.listen(process.env.PORT || 3000, () => {
     console.log('Servidor corriendo');

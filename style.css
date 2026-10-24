@@ -14,3 +14,22 @@ body {
 canvas {
     border: 1px solid black;
 }
+
+#scoreboard {
+    border-collapse: collapse;
+    background: white;
+    margin-bottom: 20px;
+    min-width: 300px;
+}
+#scoreboard th, #scoreboard td {
+    border: 1px solid #ccc;
+    padding: 6px 14px;
+    text-align: center;
+}
+#scoreboard th {
+    background: #ddd;
+}
+#scoreboard .me {
+    background: #fff3b0;
+    font-weight: bold;
+}
