@@ -3,20 +3,27 @@ const ctx = canvas.getContext('2d');
 canvas.width = 800;
 canvas.height = 600;
 
-let score = 0;
 const scoreText = document.getElementById('score');
+const socket = io('https://mi-servidor.onrender.com'); // <-- tu URL
 
-function drawScore() {
+let score = 0;
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = 'black';
     ctx.font = '32px Arial';
     ctx.fillText('Score: ' + score, 16, 40);
-}
-
-function update() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     scoreText.textContent = score;
-    drawScore();
-    score++;
 }
 
-setInterval(update, 1000);
+// al hacer clic en el canvas, suma 1 y avisa a todos
+canvas.addEventListener('click', () => {
+    socket.emit('updateScore', score + 1);
+});
+
+socket.on('updateScore', (newScore) => {
+    score = newScore;
+    draw();
+});
+
+draw();
